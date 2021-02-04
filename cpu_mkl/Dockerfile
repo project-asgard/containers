@@ -1,12 +1,15 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
-# git
+# git & apt-utils
 RUN apt-get update \
-   && apt-get upgrade \
-   && apt-get install -y git
+   && apt-get upgrade -y \
+   && apt-get install -y git \
+   && apt-get install -y apt-utils
 
 # build tools
-RUN apt-get install -y wget \
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata \
+   && dpkg-reconfigure --frontend noninteractive tzdata \
+   && apt-get install -y wget \
    && apt-get install -y zlib1g-dev \
    && apt-get install -y clang-format \
    && apt-get install -y build-essential \ 
@@ -16,17 +19,9 @@ RUN apt-get install -y wget \
    && apt-get install -y libopenmpi-dev \
    && apt-get install -y clang-7 \
    && apt-get install -y curl \
-   && apt-get install -y libssl-dev libcurl4-openssl-dev
-   && apt-get install -y libmkl-full-dev
-
-
-# cmake
-RUN wget wget https://github.com/Kitware/CMake/releases/download/v3.15.2/cmake-3.15.2.tar.gz || true
-RUN tar -zxvf cmake-3.15.2.tar.gz \
-    && cd cmake-3.15.2 \
-    && ./bootstrap --system-curl \
-    && make -j 2 \
-    && make install
+   && apt-get install -y libssl-dev libcurl4-openssl-dev \
+   && apt-get install -y cmake \
+   && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends libmkl-full-dev
 
 # openmpi isn't happy with running su
 RUN useradd -ms /bin/bash mpiuser
