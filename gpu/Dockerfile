@@ -18,9 +18,9 @@ RUN apt-get install -y wget \
    && apt-get install -y libssl-dev libcurl4-openssl-dev
 
 # cmake
-RUN wget wget https://github.com/Kitware/CMake/releases/download/v3.15.2/cmake-3.15.2.tar.gz || true
-RUN tar -zxvf cmake-3.15.2.tar.gz \
-    && cd cmake-3.15.2 \
+RUN wget wget https://github.com/Kitware/CMake/releases/download/v3.20.1/cmake-3.20.1.tar.gz || true
+RUN tar -zxvf cmake-3.20.1.tar.gz \
+    && cd cmake-3.20.1 \
     && ./bootstrap --system-curl \
     && make -j 2 \
     && make install

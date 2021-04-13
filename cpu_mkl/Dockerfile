@@ -6,6 +6,18 @@ RUN apt-get update \
    && apt-get install -y git \
    && apt-get install -y apt-utils
 
+# Use Kitware APT Repository for newer CMake
+# https://apt.kitware.com/
+RUN apt-get update \
+   && apt-get install -y apt-transport-https \
+   && apt-get install -y ca-certificates \
+   && apt-get install -y gnupg \
+   && DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common \
+   && apt-get install -y wget \
+   && wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null \
+   && apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main' \
+   && apt-get update
+
 # build tools
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata \
    && dpkg-reconfigure --frontend noninteractive tzdata \
