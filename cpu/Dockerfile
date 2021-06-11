@@ -33,7 +33,13 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tz
    && apt-get install -y clang-7 \
    && apt-get install -y curl \
    && apt-get install -y libssl-dev libcurl4-openssl-dev \
-   && apt-get install -y cmake
+   && apt-get install -y cmake \
+   && apt-get install -y libblas-dev \
+   && apt-get install -y liblapack-dev \
+   && apt-get install -y libscalapack-openmpi-dev
+
+#https://bugs.launchpad.net/ubuntu/+source/scalapack/+bug/1917534
+RUN sed -i 's/${_IMPORT_PREFIX}\/lib/${_IMPORT_PREFIX}\/lib\/x86_64-linux-gnu/g' /usr/lib/cmake/scalapack-2.1.0.openmpi/scalapack-targets-none.cmake
 
 # openmpi isn't happy with running su
 RUN useradd -ms /bin/bash mpiuser
