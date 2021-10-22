@@ -1,9 +1,22 @@
-FROM nvidia/cuda:10.2-devel
+FROM nvidia/cuda:11.3.0-devel-ubuntu20.04
 
 # git
 RUN apt-get update -y \
    && apt-get upgrade -y \
-   && apt-get install -y git
+   && apt-get install -y git \
+   && apt-get install -y apt-utils
+
+# Use Kitware APT Repository for newer CMake
+# https://apt.kitware.com/
+RUN apt-get update \
+   && apt-get install -y apt-transport-https \
+   && apt-get install -y ca-certificates \
+   && apt-get install -y gnupg \
+   && DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common \
+   && apt-get install -y wget \
+   && wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null \
+   && apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main' \
+   && apt-get update
 
 # build tools
 RUN apt-get install -y wget \
@@ -15,15 +28,8 @@ RUN apt-get install -y wget \
    && apt-get install -y gfortran \
    && apt-get install -y clang-7 \
    && apt-get install -y curl \
-   && apt-get install -y libssl-dev libcurl4-openssl-dev
-
-# cmake
-RUN wget wget https://github.com/Kitware/CMake/releases/download/v3.20.1/cmake-3.20.1.tar.gz || true
-RUN tar -zxvf cmake-3.20.1.tar.gz \
-    && cd cmake-3.20.1 \
-    && ./bootstrap --system-curl \
-    && make -j 2 \
-    && make install
+   && apt-get install -y libssl-dev libcurl4-openssl-dev \
+   && apt-get install -y cmake
 
 # openmpi isn't happy with running su
 RUN useradd -ms /bin/bash mpiuser
