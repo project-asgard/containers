@@ -31,6 +31,16 @@ RUN apt-get install -y wget \
    && apt-get install -y libssl-dev libcurl4-openssl-dev \
    && apt-get install -y cmake
 
+# Add AMD ROCM repository
+RUN apt-get update \
+   && wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/rocm.gpg >/dev/null \
+   && apt-add-repository 'deb [arch=amd64] https://repo.radeon.com/rocm/apt/4.3.1/ ubuntu main' \
+   && apt-get update
+
+# Install HIP
+RUN apt-get update -y \
+   && apt-get install -y hip-base
+
 # openmpi isn't happy with running su
 RUN useradd -ms /bin/bash mpiuser
 USER mpiuser
