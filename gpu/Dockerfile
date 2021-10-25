@@ -39,7 +39,16 @@ RUN apt-get update \
 
 # Install HIP
 RUN apt-get update -y \
-   && apt-get install -y hip-base
+   && apt-get install -y hip-base \
+   && ln -s /opt/rocm-4.3.1/ /opt/rocm
+
+# Add ROCM/HIP to PATH
+ENV PATH=/opt/rocm/bin:$PATH
+
+# Compile hipBLAS for CUDA and install it
+RUN git clone --depth 1 --branch rocm-4.3.1 https://github.com/ROCmSoftwarePlatform/hipBLAS.git \
+   && cd hipBLAS \
+   && ./install.sh --cuda -i
 
 # openmpi isn't happy with running su
 RUN useradd -ms /bin/bash mpiuser
