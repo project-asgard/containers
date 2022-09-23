@@ -22,7 +22,9 @@ RUN apt-get install -y tzdata \
    && apt-get install -y cmake \
    && apt-get install -y liblapack-dev \
    && apt-get install -y libopenmpi-dev \
-   && apt-get install -y libscalapack-openmpi-dev
+   && apt-get install -y libscalapack-openmpi-dev \
+   && apt-get install -y doxygen \
+   && apt-get install -y graphviz
 
 #https://bugs.launchpad.net/ubuntu/+source/scalapack/+bug/1917534
 RUN sed -i 's/${_IMPORT_PREFIX}\/lib/${_IMPORT_PREFIX}\/lib\/x86_64-linux-gnu/g' /usr/lib/cmake/scalapack-2.1.0.openmpi/scalapack-targets-none.cmake
