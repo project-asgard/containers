@@ -28,6 +28,7 @@ RUN apt-get install -y tzdata \
 
 #https://bugs.launchpad.net/ubuntu/+source/scalapack/+bug/1917534
 RUN sed -i 's/${_IMPORT_PREFIX}\/lib/${_IMPORT_PREFIX}\/lib\/x86_64-linux-gnu/g' /usr/lib/cmake/scalapack-2.1.0.openmpi/scalapack-targets-none.cmake
+RUN sed -i 's/liblapack.so;/liblapack.so.3;/g' /usr/lib/cmake/scalapack-2.1.0.openmpi/scalapack-targets-none.cmake
 
 # openmpi isn't happy with running su
 RUN useradd -ms /bin/bash mpiuser
