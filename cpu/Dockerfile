@@ -20,8 +20,8 @@ RUN apt-get install -y tzdata \
    && apt-get install -y clang-12 \
    && apt-get install -y libomp-12-dev \
    && apt-get install -y cmake \
-   && apt-get install -y liblapack-dev \
-   && apt-get install -y libopenmpi-dev \
+   && apt-get install -y libblis-serial-dev \
+   && apt-get install -y libflame-dev \
    && apt-get install -y libscalapack-openmpi-dev \
    && apt-get install -y doxygen \
    && apt-get install -y graphviz
@@ -33,3 +33,4 @@ RUN sed -i 's/${_IMPORT_PREFIX}\/lib/${_IMPORT_PREFIX}\/lib\/x86_64-linux-gnu/g'
 RUN useradd -ms /bin/bash mpiuser
 USER mpiuser
 WORKDIR /home/mpiuser
+
