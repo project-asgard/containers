@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.3.0-devel-ubuntu20.04
+FROM nvidia/cuda:11.4.3-devel-ubuntu20.04
 
 # git
 RUN apt-get update -y \
@@ -21,12 +21,10 @@ RUN apt-get update \
 # build tools
 RUN apt-get install -y wget \
    && apt-get install -y zlib1g-dev \
-   && apt-get install -y clang-format \
    && apt-get install -y build-essential \ 
    && apt-get install -y gcc \
    && apt-get install -y g++ \
    && apt-get install -y gfortran \
-   && apt-get install -y clang-7 \
    && apt-get install -y curl \
    && apt-get install -y libssl-dev libcurl4-openssl-dev \
    && apt-get install -y cmake
